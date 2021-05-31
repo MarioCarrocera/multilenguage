@@ -13,6 +13,19 @@ trait LenguageB{
 		return $this->retval;
 	}
 
+	function LngWrt($leng)
+	{
+    	if ($this->ot_getinside($leng,'Lenguages.tas','main')){
+    		$this->lengW = $leng;
+       	} 
+    	else 
+    	{
+    		$this->lengR = 'none';
+		}			
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		return $this->retval;
+	}
+
 	function LngRadMsr($leng)
 	{
 		if ($this->ot_connect(FALSE)) {

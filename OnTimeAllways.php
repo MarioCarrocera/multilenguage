@@ -3,51 +3,51 @@ trait Allways{
 	
 	private $actses='000000';	
 	public  $errvalid = array();
+	public  $dataresult = array();
 	private $datareview = array();
+	private $dataindex = array();
 	private $retarr = array();
-	private $tstring = ' SKRil';
+	private $tstring = ' SKkRil';
 	private $force = FALSE;
 	private $info = array();
-	private $lengR = 'none';
-	private $lengW = 'none';
-	private $lengD = 'none';
+	private $Systimezone='UTC';
+	private $Usrtimezone='UTC';
+	private $Systimeformat = 'YmdHisP';
+	private $Usrtimeformat = 'YmdHisP';
+	private $TimeStamp = 'YmdHisP';	
+	private $path = 'none';
+	private $lengR = 'en';
+	private $lengW = 'en';
+	private $lengD = 'en';
 	private $lengF = 'yes';
 	
-function __construct($container='ontime',$user='none',$pass='pass'){
-	$this->conected=FALSE;$this->container=$container;$this->features=$this->ot_readif('features.json');$this->content=$this->ot_readif('content.json');$this->errtext=$this->ot_readif('error.json');$this->level=$this->ot_readif('level.json');$this->status=$this->ot_readif('status.json');
-	if ($this->check()) {
-		if (array_key_exists('main', $this->features)) {
-			$this->errtext=$this->ot_readif('err.bas','main');
-			$this->level=$this->ot_readif('level.bas','main');
-			$this->status=$this->ot_readif('status.bas','main');}
-		if (array_key_exists('date', $this->features)) {
-	    	if ($this->ot_getinside('tz','admin.json','main')){
-	       		$this->Systimezone=$this->retval;} 
-	    	else {
-				$this->Systimezone=date_default_timezone_get(); }
-	    	if ($this->ot_getinside('ft','admin.json','main')){
-	       		$this->Systimeformat=$this->retval;} 
-	    	else {
-				$this->Systimeformat='Y-m-d H:i:s P'; }}
-    	if ($this->ot_getinside('lr','admin.json','main')){
-    		$this->lengR = $this->retval;} 
-	    else {
-   			$this->lengR = 'none';}			
-    	if ($this->ot_getinside('lw','admin.json','main')){
-    		$this->lengW = $this->retval;} 
-	    else {
-   			$this->lengW = 'none';}			
-    	if ($this->ot_getinside('ld','admin.json','main')){
+
+function __construct($container='../ontime',$user='none',$pass='pass'){
+	$this->conected=FALSE;
+	$this->container=$container;
+	$this->features=$this->ot_readif('features.json');
+	$this->content=$this->ot_readif('content.json');
+	$this->errtext=$this->ot_readif('err.bas','main');
+	$this->level=$this->ot_readif('level.bas','main');
+	$this->status=$this->ot_readif('status.bas','main');
+   	if ($this->ot_getinside('tz','admin.json','main')){
+    	$this->Systimezone=$this->retval;} 
+   	if ($this->ot_getinside('ft','admin.json','main')){
+   		$this->Systimeformat=$this->retval;} 
+   	if ($this->ot_getinside('lr','admin.json','main')){
+   		$this->lengR = $this->retval;} 
+   	if ($this->ot_getinside('lw','admin.json','main')){
+   		$this->lengW = $this->retval;} 
+   	if ($this->ot_getinside('ld','admin.json','main')){
     		$this->lengD = $this->retval;} 
-	    else {
-   			$this->lengD = 'none';}			
-    	if ($this->ot_getinside('lf','admin.json','main')){
-    		$this->lengF = $this->retval;} 
-	    else {
-   			$this->lengF = 'yes';}			
-		if ($user!='none'){
-			$this->Connect($user, $pass);}}			
-	$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid  );}
+   	if ($this->ot_getinside('lf','admin.json','main')){
+    	$this->lengF = 'none';} 
+	if ($user!='none'){
+		$this->Connect($user, $pass);}			
+
+	$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid  );
+    return $this->conected;
+}	
 function Connect($User, $Password){
 			if ($this->ot_connect(FALSE)) {
 				if ($this->ot_exist($User,'usr')) {
@@ -189,4 +189,14 @@ function Connect($User, $Password){
 		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $retval );
 		return $retval;
 	}	
+	function ClnFtr($feature){
+		$retval = $this->ot_getlist($feature.'/*.','*');
+		foreach ($retval as $clave => $value){
+			if (!strrpos ( $value , '.json' )){
+			  unlink($value);	
+			}
+		}		
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $retval );
+		return $retval;
+	}
 }

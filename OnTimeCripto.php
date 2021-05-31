@@ -8,7 +8,7 @@ trait Cripto{
 			$file=$this->container.'/'.$inside. '/'.$file;
 		}
 		$vread=[];
-		if (($this->lengR!='none') and ($this->lengR!=$this->lengD)){
+		if ( ($this->lengR!='none') ){
 			$file2 = $file.'.'.$this->lengW;
 		}
 		if ( $this->lengF!='no' ){
@@ -29,15 +29,18 @@ trait Cripto{
 				$this->ot_ae('C0010M005',$inside.'/'.$file);
 			}
 		}		
-		if (($this->lengR!='none') and ($this->lengR!=$this->lengD)){
+		
+		if (($this->lengR!='none') ){
 			if ( file_exists($file2) )  {
-				$stream=fopen($file,"r");
+				$stream=fopen($file2,"r");
 				if ($stream) {
-				$vread='';
+					$vread='';
 					while (!feof($stream)) {
 						$vread.=fgets($stream);
 					}
+					echo $vread;
 					$vread2=json_decode($vread,true);
+					print_r($vread2);
 					$vread = array_merge($vread2,$vread);
 					fclose($stream);
 				} else {
@@ -59,9 +62,9 @@ trait Cripto{
 			$file=$this->container.'/'.$inside. '/'.$file;
 		}
 		$aread=[];
-		if (($this->lengR!='none') and ($this->lengR!=$this->lengD)){
+		if (($this->lengR != 'none') ){
 			$file2 = $file.'.'.$this->lengR;
-		}
+		} 
 		if ( $this->lengF!='no' ){
 			if (file_exists($file)) {
 				$stream=fopen($file,"r");
@@ -78,16 +81,16 @@ trait Cripto{
 				}
 			}
 		}
-		if (($this->lengR!='none') and ($this->lengR!=$this->lengD)){
+		if (($this->lengR!='none') ){
 			if ( file_exists($file2) )  {
-				$stream=fopen($file,"r");
+				$stream=fopen($file2,"r");
 				if ($stream) {
 				$vread='';
 					while (!feof($stream)) {
 						$vread.=fgets($stream);
 					}
 					$vread2=json_decode($vread,true);
-					$aread = array_merge($vread2,$aread);
+					$aread = array_merge($aread,$vread2);
 					fclose($stream);
 				} else {
 					fclose($stream);
@@ -107,7 +110,7 @@ trait Cripto{
 			} else {
 				$file=$this->container.'/'.$inside. '/'.$file;
 			}
-			if (($this->lengW!='none') and ($this->lengW!=$this->lengD)){
+			if (($this->lengW!='none') ){
 				$file .= '.'.$this->lengW;
 			}
 			$this->err='0';
